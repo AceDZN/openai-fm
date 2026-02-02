@@ -5,8 +5,8 @@ type IconProps = {
 export const Regenerate = (props: IconProps) => {
   return (
     <svg
-      width="36"
-      height="36"
+      width="24"
+      height="24"
       viewBox="0 0 36 36"
       fill="currentColor"
       {...props}
@@ -29,8 +29,8 @@ export const Regenerate = (props: IconProps) => {
 export const Shuffle = (props: IconProps) => {
   return (
     <svg
-      width="36"
-      height="36"
+      width="24"
+      height="24"
       viewBox="0 0 36 36"
       fill="currentColor"
       {...props}

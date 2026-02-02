@@ -20,9 +20,8 @@ const PlayingWaveform = ({
       return (
         <div
           key={idx}
-          className={`w-[2px] bg-white transition-all duration-150 rounded-[2px] absolute top-1/2 -translate-y-1/2 ${
-            audioLoaded ? "opacity-100" : s["animate-wave"]
-          }`}
+          className={`w-[2px] bg-white transition-all duration-150 rounded-[2px] absolute top-1/2 -translate-y-1/2 ${audioLoaded ? "opacity-100" : s["animate-wave"]
+            }`}
           style={{
             height,
             animationDelay: `${idx * 0.15}s`,
@@ -54,7 +53,7 @@ export default function PlayButton() {
       .map(() => Math.random() * 0.06);
 
   const handleSubmit = async () => {
-    const { input, prompt, voice } = appStore.getState();
+    const { input, prompt, voice, speed } = appStore.getState();
 
     if (audioLoading) return;
 
@@ -81,6 +80,7 @@ export default function PlayButton() {
       url.searchParams.append("input", input);
       url.searchParams.append("prompt", prompt);
       url.searchParams.append("voice", voice);
+      url.searchParams.append("speed", String(speed));
       url.searchParams.append("generation", crypto.randomUUID());
       const audioUrl = url.toString();
       appStore.setState({ latestAudioUrl: audioUrl });

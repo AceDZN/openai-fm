@@ -1,7 +1,7 @@
 import { useAudioClip } from "@/hooks/useAudioClip";
-import { Switcher } from "./Switcher";
+// import { Switcher } from "./Switcher";
 import clsx from "clsx";
-import { External } from "./Icons";
+// import { External } from "./Icons";
 
 interface HeaderProps {
   devMode: boolean;
@@ -35,10 +35,9 @@ export const Header = ({ devMode, setDevMode }: HeaderProps) => {
         <div className="col-span-12 md:col-span-7 xl:col-span-6 order-3 md:order-2">
           <div className="text-balance">
             <div className="text-current/70 mb-3">
-              An interactive demo for developers to try the new text-to-speech
-              model in the OpenAI API.{" "}
+              An interactive demo to try, play, and download GoEddy Tutor voices
             </div>
-            <a
+            {/* <a
               className="uppercase hover:text-current/70 transition-colors inline-block"
               href="https://platform.openai.com/docs/guides/audio"
               target="_blank"
@@ -47,10 +46,10 @@ export const Header = ({ devMode, setDevMode }: HeaderProps) => {
                 Start building
                 <External className="h-[.93rem] w-[.93rem]" />
               </span>
-            </a>
+            </a> */}
           </div>
         </div>
-        <div className="col-span-10 md:col-span-3 xl:col-span-4 flex justify-end items-start order-2 md:order-3">
+        {/* <div className="col-span-10 md:col-span-3 xl:col-span-4 flex justify-end items-start order-2 md:order-3">
           <div className="relative -top-[0.57rem]">
             <Switcher
               checked={devMode}
@@ -58,7 +57,7 @@ export const Header = ({ devMode, setDevMode }: HeaderProps) => {
               id="dev-mode"
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </header>
   );

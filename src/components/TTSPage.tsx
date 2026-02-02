@@ -4,6 +4,7 @@ import {
   getRandomLibrarySet,
   getRandomVoice,
   LIBRARY,
+  TUTORS,
   VOICES,
 } from "../lib/library";
 import { Block } from "./ui/Block";
@@ -41,6 +42,7 @@ const Board = () => {
   const input = appStore.useState((state) => state.input);
   const inputDirty = appStore.useState((state) => state.inputDirty);
   const prompt = appStore.useState((state) => state.prompt);
+  const speed = appStore.useState((state) => state.speed);
   const selectedEntry = appStore.useState((state) => state.selectedEntry);
   const librarySet = appStore.useState((state) => state.librarySet);
   const browserNotSupported = appStore.useState(
@@ -79,21 +81,57 @@ const Board = () => {
     });
   };
 
+  const handleTutorSelect = (name: string) => {
+    const entry = LIBRARY[name];
+
+    appStore.setState((draft) => {
+      if (!inputDirty) {
+        draft.input = entry.input;
+      }
+
+      draft.voice = entry.voice;
+      draft.prompt = entry.prompt;
+      draft.selectedEntry = entry;
+      draft.latestAudioUrl = null;
+    });
+  };
+
   return (
     <main className="flex-1 flex flex-col gap-x-3 w-full max-w-(--page-max-width) mx-auto">
       {browserNotSupported && (
         <BrowserNotSupported
           open={browserNotSupported}
-          onOpenChange={() => {}}
+          onOpenChange={() => { }}
         />
       )}
+      <div className="flex flex-row">
+        <Block title="Tutors">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            {TUTORS.map((entry) => (
+              <Button
+                key={entry.name}
+                block
+                color="default"
+                onClick={() => handleTutorSelect(entry.name)}
+                selected={selectedEntry?.name === entry.name}
+                className="aspect-4/3 sm:aspect-2/1 md:aspect-4/3 min-h-[40px] max-h-[70px] flex-col items-start justify-between relative"
+              >
+                <span className="break-words pr-1">{entry.name}</span>
+                <div className="absolute left-[0.93rem] bottom-[0.93rem]">
+                  <ButtonLED />
+                </div>
+              </Button>
+            ))}
+          </div>
+        </Block>
+      </div>
       <div className="flex flex-row">
         <Block title="Voice">
           <div className="grid grid-cols-12 gap-3">
             {VOICES.map((newVoice) => (
               <div
                 key={newVoice}
-                className="col-span-4 sm:col-span-3 md:col-span-2 xl:col-span-1 relative"
+                className="col-span relative"
               >
                 <Button
                   block
@@ -105,7 +143,7 @@ const Board = () => {
                     });
                   }}
                   selected={newVoice === voice}
-                  className="aspect-4/3 sm:aspect-2/1 lg:aspect-2.5/1 xl:aspect-square min-h-[60px] max-h-[100px] flex-col items-start justify-between relative"
+                  className="aspect-4/3 sm:aspect-2/1 lg:aspect-2.5/1 xl:aspect-square min-h-[60px] max-h-[60px] flex-col items-start justify-between relative"
                 >
                   <span>
                     {newVoice[0].toUpperCase()}
@@ -122,7 +160,7 @@ const Board = () => {
                 </Button>
               </div>
             ))}
-            <div className="col-span-4 sm:col-span-3 md:col-span-2 xl:col-span-1">
+            <div className="col-span">
               <Button
                 block
                 color="neutral"
@@ -133,7 +171,7 @@ const Board = () => {
                     draft.latestAudioUrl = null;
                   });
                 }}
-                className="aspect-4/3 sm:aspect-2/1 lg:aspect-2.5/1 xl:aspect-square max-h-[100px]"
+                className="aspect-4/3 sm:aspect-2/1 lg:aspect-2.5/1 xl:aspect-square  min-h-[60px] max-h-[60px]"
                 aria-label="Select random voice"
               >
                 <Shuffle />
@@ -142,10 +180,11 @@ const Board = () => {
           </div>
         </Block>
       </div>
+
       <div className="flex flex-col md:flex-row gap-3">
         <Block title="Vibe">
           <div className="flex flex-col gap-3">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-6 lg:grid-cols-6 gap-2">
               {librarySet.map((entry) => (
                 <Button
                   key={entry.name}
@@ -153,24 +192,50 @@ const Board = () => {
                   color="default"
                   onClick={() => handlePresetSelect(entry.name)}
                   selected={selectedEntry?.name === entry.name}
-                  className="aspect-4/3 sm:aspect-2/1 lg:aspect-2.5/1 min-h-[60px] max-h-[100px] flex-col items-start justify-between relative"
+                  className="min-h-[36px] max-h-[48px] flex-col items-start justify-center relative text-[12px]"
                 >
                   <span className="break-words pr-1">{entry.name}</span>
-                  <div className="absolute left-[0.93rem] bottom-[0.93rem]">
-                    <ButtonLED />
-                  </div>
                 </Button>
               ))}
               <Button
                 block
                 color="neutral"
                 onClick={handleRefreshLibrarySet}
-                className="aspect-4/3 sm:aspect-2/1 lg:aspect-2.5/1 min-h-[60px] max-h-[100px]"
+                className="min-h-[36px] max-h-[48px] flex-col items-center justify-center text-center relative text-[12px]"
                 aria-label="Generate new list of vibes"
               >
                 <Regenerate />
               </Button>
             </div>
+            <Block title="Speed">
+              <div className="flex items-center gap-3">
+                <input
+                  type="range"
+                  min={0.5}
+                  max={2}
+                  step={0.05}
+                  value={speed}
+                  onChange={({ target }) => {
+                    appStore.setState((draft) => {
+                      draft.speed = parseFloat(target.value);
+                      draft.latestAudioUrl = null;
+                    });
+                  }}
+                  className="flex-1 accent-primary h-2 cursor-pointer"
+                />
+                <button
+                  onClick={() => {
+                    appStore.setState((draft) => {
+                      draft.speed = 1.0;
+                      draft.latestAudioUrl = null;
+                    });
+                  }}
+                  className="text-[12px] tabular-nums min-w-[3.5rem] text-center rounded-md bg-screen px-2 py-1 shadow-textarea cursor-pointer hover:opacity-70 transition-opacity"
+                >
+                  {speed.toFixed(2)}x
+                </button>
+              </div>
+            </Block>
             <textarea
               id="input"
               rows={8}

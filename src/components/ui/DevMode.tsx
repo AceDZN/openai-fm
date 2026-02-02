@@ -45,6 +45,7 @@ export const DevMode: React.FC = () => {
   const voice = appStore.useState((state) => state.voice);
   const input = appStore.useState((state) => state.input);
   const prompt = appStore.useState((state) => state.prompt);
+  const speed = appStore.useState((state) => state.speed);
   const height = "563px";
   const codeView = appStore.useState((state) => state.codeView);
 
@@ -85,7 +86,7 @@ export const DevMode: React.FC = () => {
       >
         <div id="py" className={clsx(s.Container, "bg-screen")}>
           <CodeMirror
-            value={getCodeSnippet("py", { input, prompt, voice })}
+            value={getCodeSnippet("py", { input, prompt, voice, speed })}
             height={height}
             extensions={[python(), editorTheme]}
             basicSetup={setup}
@@ -94,7 +95,7 @@ export const DevMode: React.FC = () => {
         </div>
         <div id="js" className={clsx(s.Container, "bg-screen")}>
           <CodeMirror
-            value={getCodeSnippet("js", { input, prompt, voice })}
+            value={getCodeSnippet("js", { input, prompt, voice, speed })}
             height={height}
             extensions={[javascript(), editorTheme]}
             basicSetup={setup}
@@ -103,7 +104,7 @@ export const DevMode: React.FC = () => {
         </div>
         <div id="curl" className={clsx(s.Container, "bg-screen")}>
           <CodeMirror
-            value={getCodeSnippet("curl", { input, prompt, voice })}
+            value={getCodeSnippet("curl", { input, prompt, voice, speed })}
             height={height}
             extensions={[editorTheme]}
             basicSetup={setup}

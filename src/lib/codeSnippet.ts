@@ -1,7 +1,11 @@
 export const getCodeSnippet = (
   language: string,
-  { input, prompt, voice }: { input: string; prompt: string; voice: string }
+  { input, prompt, voice, speed }: { input: string; prompt: string; voice: string; speed: number }
 ): string => {
+  const speedLine = speed !== 1 ? `\n        speed=${speed},` : "";
+  const speedLineJS = speed !== 1 ? `\n  speed: ${speed},` : "";
+  const speedLineCurl = speed !== 1 ? `\n  "speed": ${speed},` : "";
+
   switch (language) {
     case "py":
       return `import asyncio
@@ -22,7 +26,7 @@ async def main() -> None:
         voice="${voice}",
         input=input,
         instructions=instructions,
-        response_format="pcm",
+        response_format="pcm",${speedLine}
     ) as response:
         await LocalAudioPlayer().play(response)
 
@@ -42,7 +46,7 @@ const response = await openai.audio.speech.create({
   model: 'gpt-4o-mini-tts',
   voice: '${voice}',
   input,
-  instructions,
+  instructions,${speedLineJS}
 });
 
 await playAudio(response);
@@ -55,7 +59,7 @@ await playAudio(response);
   "model": "gpt-4o-mini-tts",
   "voice": "${voice}",
   "input": ${JSON.stringify(input)},
-  "instructions": ${JSON.stringify(prompt)},
+  "instructions": ${JSON.stringify(prompt)},${speedLineCurl}
   "response_format": "wav"
 }' | ffplay -i -`;
     default:

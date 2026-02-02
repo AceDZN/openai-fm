@@ -17,6 +17,7 @@ self.addEventListener("fetch", (event) => {
     formData.append("input", url.searchParams.get("input"));
     formData.append("prompt", url.searchParams.get("prompt"));
     formData.append("voice", url.searchParams.get("voice"));
+    formData.append("speed", url.searchParams.get("speed") || "1");
     formData.append("vibe", url.searchParams.get("vibe"));
 
     url.search = "";

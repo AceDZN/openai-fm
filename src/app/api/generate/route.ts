@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
   let prompt = searchParams.get("prompt") || "";
   const voice = searchParams.get("voice") || "";
   const vibe = searchParams.get("vibe") || "audio";
+  const speed = searchParams.get("speed") || "1";
 
   // Truncate input and prompt to max 1000 characters
   // Frontend handles this, but we'll do it here too
@@ -40,6 +41,7 @@ export async function GET(req: NextRequest) {
         input,
         response_format,
         voice,
+        speed,
         // Don't pass if empty
         ...(prompt && { instructions: prompt }),
       }),
@@ -77,6 +79,7 @@ export async function POST(req: NextRequest) {
   let prompt = formData.get("prompt")?.toString() || "";
   const voice = formData.get("voice")?.toString() || "";
   const vibe = formData.get("vibe") || "audio";
+  const speed = Math.min(4.0, Math.max(0.25, parseFloat(formData.get("speed")?.toString() || "1")));
 
   // Truncate input and prompt to max 1000 characters
   // Frontend handles this, but we'll do it here too
@@ -100,6 +103,7 @@ export async function POST(req: NextRequest) {
         input,
         response_format,
         voice,
+        speed,
         // Don't pass if empty
         ...(prompt && { instructions: prompt }),
       }),

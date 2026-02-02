@@ -8,6 +8,7 @@ export interface AppState {
   input: string;
   inputDirty: boolean;
   prompt: string;
+  speed: number;
   codeView: string;
   selectedEntry: LibraryEntry | null;
   librarySet: LibraryEntry[];
@@ -19,6 +20,7 @@ const INITIAL_STATE: AppState = {
   input: "",
   inputDirty: false,
   prompt: "",
+  speed: 1.0,
   codeView: "py",
   selectedEntry: null,
   librarySet: [],

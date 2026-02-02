@@ -13,8 +13,8 @@ export const CodeCopyButton = () => {
       return;
     }
 
-    const { input, prompt, voice, codeView } = appStore.getState();
-    const codeValue = getCodeSnippet(codeView, { input, prompt, voice });
+    const { input, prompt, voice, speed, codeView } = appStore.getState();
+    const codeValue = getCodeSnippet(codeView, { input, prompt, voice, speed });
     copyText(codeValue);
   };
 

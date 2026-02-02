@@ -1,7 +1,7 @@
 import { NextRequest, userAgent } from "next/server";
 
-export const MAX_INPUT_LENGTH = 1000;
-export const MAX_PROMPT_LENGTH = 1000;
+const MAX_INPUT_LENGTH = 1000;
+const MAX_PROMPT_LENGTH = 1000;
 
 // GET handler that proxies requests to the OpenAI TTS API and streams
 // the response back to the client.
